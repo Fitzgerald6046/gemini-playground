@@ -36,12 +36,14 @@ const systemInstructionInput = document.getElementById('system-instruction');
 systemInstructionInput.value = CONFIG.SYSTEM_INSTRUCTION.TEXT;
 const applyConfigButton = document.getElementById('apply-config');
 const responseTypeSelect = document.getElementById('response-type-select');
+const languageSelect = document.getElementById('language-select');
 
 // Load saved values from localStorage
 const savedApiKey = localStorage.getItem('gemini_api_key');
 const savedVoice = localStorage.getItem('gemini_voice');
 const savedFPS = localStorage.getItem('video_fps');
 const savedSystemInstruction = localStorage.getItem('system_instruction');
+const savedLanguage = localStorage.getItem('gemini_language');
 
 
 if (savedApiKey) {
@@ -57,6 +59,9 @@ if (savedFPS) {
 if (savedSystemInstruction) {
     systemInstructionInput.value = savedSystemInstruction;
     CONFIG.SYSTEM_INSTRUCTION.TEXT = savedSystemInstruction;
+}
+if (savedLanguage) {
+    languageSelect.value = savedLanguage;
 }
 
 // Handle configuration panel toggle
@@ -252,12 +257,14 @@ async function connectToWebsocket() {
     localStorage.setItem('gemini_api_key', apiKeyInput.value);
     localStorage.setItem('gemini_voice', voiceSelect.value);
     localStorage.setItem('system_instruction', systemInstructionInput.value);
+    localStorage.setItem('gemini_language', languageSelect.value);
 
     const config = {
         model: CONFIG.API.MODEL_NAME,
         generationConfig: {
             responseModalities: responseTypeSelect.value,
             speechConfig: {
+                languageCode: languageSelect.value,
                 voiceConfig: { 
                     prebuiltVoiceConfig: { 
                         voiceName: voiceSelect.value    // You can change voice in the config.js file
